@@ -1,8 +1,7 @@
-[README.md](https://github.com/user-attachments/files/33793321/README.md)
-
+[README.md](https://github.com/user-attachments/files/33793579/README.md)
 # NEXUS — Colegio Balbino García
 
-Aplicación web responsive para registrar y hacer seguimiento a fallas institucionales, con tema oscuro, acento configurable, perfil básico y panel privado de administración. Esta versión usa Firebase Authentication y Firestore; no incluye carga de imágenes.
+Aplicación web responsive para registrar y hacer seguimiento a fallas institucionales, con tema oscuro, acento configurable, perfil básico y panel privado de administración. Esta versión usa Firebase Authentication y Firestore. La foto de perfil se guarda localmente en el navegador; no utiliza servicios externos de imágenes.
 
 ## Contenido
 - `index.html`: interfaz y vistas.
@@ -62,10 +61,20 @@ El ID del documento Firestore es único. El código visible `NX-AAAA-XXXXXX` se 
 No guardes contraseñas en el repositorio, HTML, JavaScript ni archivos de configuración. La contraseña compartida en el mensaje no se incluye en estos archivos. Si es real, cámbiala de inmediato desde Firebase Authentication / la cuenta correspondiente y activa MFA en las cuentas administrativas. La configuración web de Firebase es pública por diseño; las reglas de acceso y Authentication deben proteger los datos.
 
 ## Personalización visual
-La interfaz usa tema oscuro con fondos carbón/gris, tarjetas un poco más claras e icono NEXUS geométrico. Cada usuario puede abrir el engranaje junto a su perfil o tocar su avatar arriba para cambiar nombre, elegir cualquier color de acento. La foto de perfil está desactivada en esta versión.
+La interfaz usa tema oscuro con fondos carbón/gris, tarjetas un poco más claras e icono NEXUS geométrico. Cada usuario puede abrir el engranaje junto a su perfil o tocar su avatar arriba para cambiar nombre, elegir cualquier color de acento. La foto de perfil se comprime y se guarda localmente en el navegador actual, sin subirla a ningún servicio externo.
 
 ## Limitaciones de esta versión
 - El envío de correo/avisos automáticos, SLA programados y escalamiento por vencimiento requieren Cloud Functions o un servicio backend.
 - La prioridad crítica queda sujeta a revisión institucional; los incidentes con peligro inmediato deben seguir el protocolo de emergencia del colegio.
 - Los mensajes se almacenan en el documento del reporte para simplificar el MVP. Para conversaciones extensas, conviene migrarlos a una subcolección `reports/{id}/messages`.
 - La asignación de técnicos se realiza desde el panel privado de administración. El técnico ve únicamente los casos asignados a su cuenta.
+
+
+## Personalización y administración añadidas
+- Tema claro/oscuro y color de acento personalizable.
+- Foto de perfil comprimida y guardada en el almacenamiento local del navegador (no se sube a Firebase ni a servicios externos; no se sincroniza entre dispositivos).
+- Panel de administración con conteo de cuentas, alumnos y estados de suspensión.
+- La suspensión se aplica en reglas de Firestore. Para deshabilitar también la autenticación en Firebase se necesita una función de servidor/Admin SDK, que no se incluye en una web estática.
+- Modal informativo de privacidad y seguridad.
+
+**Importante al desplegar:** publica también `firestore.rules` desde Firebase Console → Firestore Database → Rules. El acceso administrativo se determina por el correo `nexusadmin@gmail.com`; no otorgues roles privilegiados a cuentas no autorizadas.
