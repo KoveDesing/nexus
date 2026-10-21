@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101828"><meta name="description" content="NEXUS — Gestión de incidentes del Colegio Balbino García">
+  <title>NEXUS · Gestión institucional</title><link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="authView" class="auth-wrap">
+  <section class="auth-card">
+    <div class="brand-mark">N<span>+</span></div><p class="eyebrow">COLEGIO BALBINO GARCÍA</p>
+    <h1>Todo en orden.<br><span>Una falla a la vez.</span></h1>
+    <p class="muted">Reporta, organiza y sigue cada incidente desde un solo lugar.</p>
+    <form id="loginForm" class="stack">
+      <label>Correo institucional<input id="loginEmail" type="email" autocomplete="username" placeholder="tu@colegio.edu.co" required></label>
+      <label>Contraseña<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Tu contraseña" required></label>
+      <button class="primary" type="submit">Iniciar sesión <span>↗</span></button>
+    </form>
+    <button id="showRegister" class="text-button">¿Primera vez en NEXUS? Crear cuenta</button>
+    <p id="authMessage" class="message" role="status"></p>
+    <p class="tiny">Acceso protegido · No compartas tu contraseña.</p>
+  </section>
+</div>
+<div id="appView" class="app hidden">
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark small">N<span>+</span></span><span>NEXUS<small>Gestión institucional</small></span></a>
+    <button id="newReportNav" class="new-report">＋ <span>Nuevo reporte</span></button>
+    <nav><p class="nav-label">ESPACIO DE TRABAJO</p>
+      <button class="nav-item active" data-view="overview">◫ <span>Resumen</span></button>
+      <button class="nav-item" data-view="reports">▤ <span>Reportes</span><span id="reportCount" class="nav-count">0</span></button>
+      <button class="nav-item" data-view="inbox">☷ <span>Conversaciones</span></button>
+      <button class="nav-item staff-only hidden" data-view="team">♧ <span>Gestión técnica</span></button>
+    </nav>
+    <div class="sidebar-bottom"><div class="profile-mini"><div id="avatarMini" class="avatar">N</div><div class="profile-text"><strong id="sideName">Usuario</strong><small id="sideRole">Usuario</small></div><button id="settingsBtn" title="Personalizar perfil">⚙</button></div><button id="logoutBtn" class="logout">↪ Cerrar sesión</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">COLEGIO BALBINO GARCÍA</p><h2 id="pageTitle">Resumen</h2></div><div class="top-actions"><span class="live-dot"></span><span class="muted small-text">Sistema activo</span><button id="profileTop" class="avatar">N</button></div></header>
+    <div id="toast" class="toast hidden" role="status"></div>
+    <section id="overviewView" class="view">
+      <div class="welcome"><div><p class="eyebrow">TU CENTRO DE CONTROL</p><h1 id="welcomeTitle">Hola, bienvenido.</h1><p class="muted">Aquí tienes una vista clara de lo que está pasando.</p></div><button id="newReportHero" class="primary">＋ Crear reporte</button></div>
+      <div class="stats"><article class="stat-card"><span class="stat-icon">◷</span><p>Abiertos</p><strong id="statOpen">0</strong><small>Requieren seguimiento</small></article><article class="stat-card"><span class="stat-icon amber">↻</span><p>En proceso</p><strong id="statProgress">0</strong><small>Atención en curso</small></article><article class="stat-card"><span class="stat-icon green">✓</span><p>Resueltos</p><strong id="statResolved">0</strong><small>Casos finalizados</small></article><article class="stat-card"><span class="stat-icon red">!</span><p>Prioridad alta/crítica</p><strong id="statUrgent">0</strong><small>Revisar prioridad</small></article></div>
+      <div class="content-grid"><section class="panel"><div class="panel-heading"><div><h3>Actividad reciente</h3><p class="muted">Últimos reportes registrados</p></div><button class="subtle" data-goto="reports">Ver todos ↗</button></div><div id="recentReports" class="report-list"></div></section>
+      <section class="panel assistant-panel"><div class="assistant-orb">✳</div><p class="eyebrow">ASISTENTE NEXUS</p><h3>¿Qué necesitas reportar?</h3><p class="muted">Cuéntanos qué ocurre. El equipo indicado podrá revisar el caso y darle seguimiento.</p><button id="assistantStart" class="outline">Describir una falla <span>↗</span></button><div class="helper-note">Consejo: incluye la ubicación y qué estabas intentando hacer.</div></section></div>
+    </section>
+    <section id="reportsView" class="view hidden"><div class="section-intro"><div><h3>Todos los reportes</h3><p class="muted">Consulta el estado y el historial de los incidentes autorizados para tu cuenta.</p></div><button id="newReportList" class="primary">＋ Nuevo reporte</button></div><div class="filters"><input id="searchReports" placeholder="⌕  Buscar por título o ubicación…"><select id="statusFilter"><option value="">Todos los estados</option><option>Nuevo</option><option>Asignado</option><option>En proceso</option><option>Esperando información</option><option>Resuelto</option><option>Cerrado</option></select><select id="priorityFilter"><option value="">Todas las prioridades</option><option>Baja</option><option>Media</option><option>Alta</option><option>Crítica</option></select></div><div id="allReports" class="report-list panel"></div></section>
+    <section id="inboxView" class="view hidden"><div class="section-intro"><div><h3>Conversaciones</h3><p class="muted">Mensajes y actualizaciones asociados a cada reporte.</p></div></div><div class="panel"><div id="inboxList" class="report-list"></div></div></section>
+    <section id="teamView" class="view hidden"><div class="section-intro"><div><h3>Gestión técnica</h3><p class="muted">Los técnicos y directivos pueden actualizar casos según sus permisos.</p></div></div><div id="teamReports" class="report-list panel"></div></section>
+  </main>
+</div>
+<div id="reportModal" class="modal hidden"><div class="modal-backdrop" data-close="reportModal"></div><section class="modal-card"><div class="modal-head"><div><p class="eyebrow">NUEVO INCIDENTE</p><h2>Cuéntanos qué sucede</h2><p class="muted">Describe el problema con claridad para facilitar la atención.</p></div><button class="icon-button" data-close="reportModal">×</button></div><form id="reportForm" class="stack"><label>Título del incidente<input id="reportTitle" maxlength="120" placeholder="Ej. El proyector no enciende" required></label><div class="form-row"><label>Categoría<select id="reportCategory" required><option value="">Selecciona una categoría</option><option>Computadores</option><option>Redes e internet</option><option>Software</option><option>Impresoras</option><option>Proyectores y pantallas</option><option>Infraestructura</option><option>Mobiliario</option><option>Otros equipos</option></select></label><label>Ubicación<input id="reportLocation" maxlength="160" placeholder="Ej. Bloque B, salón 204" required></label></div><label>Descripción<textarea id="reportDescription" rows="4" maxlength="3000" placeholder="¿Qué ocurrió? ¿A quién afecta? ¿Cuándo comenzó?" required></textarea></label><div class="form-row"><label>Prioridad sugerida<select id="reportPriority"><option>Baja</option><option selected>Media</option><option>Alta</option><option>Crítica</option></select><small>La prioridad podrá ser revisada por personal autorizado.</small></label><label>Foto o evidencia <input id="reportFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><small>Máximo 3 imágenes de 5 MB cada una.</small></label></div><div class="modal-actions"><button type="button" class="subtle" data-close="reportModal">Cancelar</button><button id="submitReport" class="primary" type="submit">Enviar reporte ↗</button></div></form></section></div>
+<div id="detailModal" class="modal hidden"><div class="modal-backdrop" data-close="detailModal"></div><section class="modal-card detail-card"><div class="modal-head"><div><p class="eyebrow" id="detailCode">REPORTE</p><h2 id="detailTitle">Detalle del reporte</h2></div><button class="icon-button" data-close="detailModal">×</button></div><div id="detailBody"></div></section></div>
+<div id="settingsModal" class="modal hidden"><div class="modal-backdrop" data-close="settingsModal"></div><section class="modal-card"><div class="modal-head"><div><p class="eyebrow">TU ESPACIO</p><h2>Personalizar perfil</h2><p class="muted">Ajusta cómo se ve NEXUS en este navegador.</p></div><button class="icon-button" data-close="settingsModal">×</button></div><form id="settingsForm" class="stack"><label>Nombre visible<input id="displayName" maxlength="80" required></label><label>Foto de perfil<input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp"><small>Opcional. Se guardará en tu perfil de NEXUS.</small></label><label>Color de acento<input id="accentColor" type="color" value="#6759e8"></label><div class="modal-actions"><button type="button" class="subtle" data-close="settingsModal">Cancelar</button><button class="primary" type="submit">Guardar cambios</button></div></form></section></div>
+<div id="registerModal" class="modal hidden"><div class="modal-backdrop" data-close="registerModal"></div><section class="modal-card"><div class="modal-head"><div><p class="eyebrow">ÚNETE A NEXUS</p><h2>Crear cuenta</h2><p class="muted">Las cuentas nuevas se crean con el rol Estudiante. Un administrador autorizado puede asignar otro rol.</p></div><button class="icon-button" data-close="registerModal">×</button></div><form id="registerForm" class="stack"><label>Nombre completo<input id="registerName" maxlength="80" required></label><label>Correo electrónico<input id="registerEmail" type="email" required></label><label>Contraseña<input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required><small>Mínimo 8 caracteres.</small></label><div class="modal-actions"><button type="button" class="subtle" data-close="registerModal">Cancelar</button><button class="primary" type="submit">Crear cuenta</button></div></form></section></div>
+<script type="module" src="app.js"></script>
+</body></html>
