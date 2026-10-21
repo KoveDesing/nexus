@@ -3,9 +3,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function myProfile() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
-    function role() { return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) ? myProfile().role : 'none'; }
-    function staff() { return role() in ['tecnico', 'directivo', 'administrador']; }
-    function admin() { return role() == 'administrador'; }
+    function admin() { return signedIn() && request.auth.token.email == 'nexusadmin@gmail.com' && request.auth.token.email_verified == true; }
+    function role() { return admin() ? 'administrador' : (signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) ? myProfile().role : 'none'); }
+    function staff() { return admin() || role() in ['tecnico', 'directivo']; }
     function owner(data) { return signedIn() && data.ownerUid == request.auth.uid; }
 
     match /users/{uid} {
@@ -21,9 +21,10 @@ service cloud.firestore {
         && request.resource.data.role == resource.data.role
         && request.resource.data.diff(resource.data).affectedKeys()
           .hasOnly(['displayName', 'photoURL', 'accentColor']);
+      // El rol se cambia únicamente desde Firebase Console por la persona propietaria del proyecto.
       allow update: if admin()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
-          ['role', 'displayName', 'photoURL', 'accentColor', 'suspended']);
+          ['displayName', 'photoURL', 'accentColor', 'suspended']);
       allow delete: if admin();
     }
 
@@ -33,18 +34,15 @@ service cloud.firestore {
         && request.resource.data.ownerEmail == request.auth.token.email
         && request.resource.data.status == 'Nuevo'
         && request.resource.data.keys().hasAll(['title','category','location','description','priority','ownerUid','createdAt']);
-      allow read: if signedIn() && (owner(resource.data) || staff()
-        && (role() != 'tecnico' || resource.data.assignedTo == request.auth.uid
-          || resource.data.visibility == 'institutional'));
+      allow read: if signedIn() && (owner(resource.data) || admin()
+        || role() == 'tecnico' && resource.data.assignedTo == request.auth.uid);
       // El dueño solo puede añadir mensajes; no cambiar estado, asignación, prioridad ni historial.
       allow update: if signedIn() && owner(resource.data)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['messages','updatedAt','code','evidence'])
         && request.resource.data.messages.size() >= resource.data.messages.size()
         && request.resource.data.messages.size() <= resource.data.messages.size() + 1;
       // El personal autorizado puede gestionar estado/prioridad/asignación e historial.
-      allow update: if signedIn() && staff()
-        && (role() != 'tecnico' || resource.data.assignedTo == request.auth.uid
-          || resource.data.assignedTo == null)
+      allow update: if signedIn() && (admin() || role() == 'tecnico' && resource.data.assignedTo == request.auth.uid)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
           ['status','priority','assignedTo','assignedName','assignedEmail','updatedAt','history','messages','evidence'])
         && request.resource.data.history.size() >= resource.data.history.size();
