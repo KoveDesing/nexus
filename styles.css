@@ -180,6 +180,7 @@ img,svg,video,canvas{max-width:100%}
   .nav-item{display:flex;flex:1 1 0;min-width:0;max-width:none;min-height:48px;flex-direction:column;justify-content:center;gap:3px;margin:0;padding:6px 4px;border-radius:12px;font-size:16px;line-height:1.2;text-align:center;white-space:nowrap}
   .nav-item span{flex:0 0 auto;min-width:0;font-size:9px;line-height:1.2}
   .nav-item span:nth-child(2){flex:0 0 auto}
+  .nav-item.staff-only:not(.hidden),.nav-item.admin-only:not(.hidden){flex:0 1 auto;min-width:108px;max-width:140px}
   .nav-item.active,.nav-item.admin-only:not(.hidden){background:var(--accent-soft);color:var(--accent)}
   .nav-count{display:none}
   .sidebar-bottom{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin-top:2px}
@@ -294,6 +295,7 @@ img,svg,video,canvas{max-width:100%}
   .report-row{gap:8px;padding:11px 7px}
   .report-trailing{max-width:82px}
   .nav-item{min-width:0;padding:6px 3px;font-size:15px}.nav-item span{font-size:8px}
+  .nav-item.staff-only:not(.hidden),.nav-item.admin-only:not(.hidden){min-width:96px;max-width:130px}
   .auth-card{padding:22px 18px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
