@@ -36,7 +36,8 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == uid
         && request.resource.data.uid == uid
         && request.resource.data.role == 'estudiante'
-        && request.resource.data.email == request.auth.token.email;
+        && request.resource.data.email is string
+        && request.resource.data.email.lower() == request.auth.token.email.lower();
       allow read: if request.auth != null && (request.auth.uid == uid || admin() || staff());
       // El usuario solo cambia su nombre/color; no puede cambiar rol ni quitarse una suspensión.
       allow update: if signedIn() && request.auth.uid == uid
