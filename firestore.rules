@@ -38,7 +38,7 @@ service cloud.firestore {
         && request.resource.data.role == 'estudiante'
         && request.resource.data.email is string
         && request.resource.data.email.lower() == request.auth.token.email.lower();
-      allow read: if request.auth != null && (request.auth.uid == uid || admin() || staff());
+      allow read: if request.auth != null && (request.auth.uid == uid || admin());
       // El usuario solo cambia su nombre/color; no puede cambiar rol ni quitarse una suspensión.
       allow update: if signedIn() && request.auth.uid == uid
         && request.resource.data.uid == resource.data.uid
@@ -60,6 +60,12 @@ service cloud.firestore {
         && request.resource.data.status == 'Nuevo'
         && request.resource.data.keys().hasAll(['title','category','location','description','priority','ownerUid','createdAt','severityScore','severityAnswers'])
         && get(/databases/$(database)/documents/settings/reportConfig).data.locations.hasAny([request.resource.data.location])
+        && request.resource.data.title is string && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 120
+        && request.resource.data.description is string && request.resource.data.description.size() > 0 && request.resource.data.description.size() <= 3000
+        && request.resource.data.category in ['Computadores','Redes e internet','Software','Impresoras','Proyectores y pantallas','Infraestructura','Mobiliario','Otros equipos']
+        && request.resource.data.messages is list && request.resource.data.messages.size() == 0
+        && request.resource.data.history is list && request.resource.data.history.size() == 1
+        && (!('assignedTo' in request.resource.data) || request.resource.data.assignedTo == null)
         && validSeverity();
       allow read: if signedIn() && (owner(resource.data) || admin()
         || role() == 'tecnico' && resource.data.assignedTo == request.auth.uid);
@@ -72,7 +78,10 @@ service cloud.firestore {
       allow update: if signedIn() && (admin() || role() == 'tecnico' && resource.data.assignedTo == request.auth.uid)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
           ['status','priority','assignedTo','assignedName','assignedEmail','updatedAt','history','messages','evidence'])
-        && request.resource.data.history.size() >= resource.data.history.size();
+        && request.resource.data.history.size() >= resource.data.history.size()
+        && request.resource.data.status in ['Nuevo','Asignado','En proceso','Esperando información','Resuelto','Cerrado']
+        && request.resource.data.priority in ['Baja','Media','Alta','Crítica']
+        && (admin() || request.resource.data.assignedTo == resource.data.assignedTo);
       allow delete: if admin();
     }
   }
