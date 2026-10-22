@@ -13,6 +13,25 @@ service cloud.firestore {
     function staff() { return role() in ['tecnico', 'directivo', 'administrador']; }
     function owner(data) { return signedIn() && data.ownerUid == request.auth.uid; }
 
+    function validSeverity() {
+      let a = request.resource.data.severityAnswers;
+      let score = (a.danger == true ? 4 : 0)
+        + (a.injury == true ? 4 : 0)
+        + (a.hazard == true ? 3 : 0)
+        + (a.affectsMany == true ? 2 : 0)
+        + (a.blocksUse == true ? 1 : 0);
+      return request.resource.data.severityScore == score
+        && request.resource.data.priority == (score >= 7 ? 'Crítica' : score >= 4 ? 'Alta' : score >= 2 ? 'Media' : 'Baja');
+    }
+
+    match /settings/{settingId} {
+      allow read: if signedIn() && settingId == 'reportConfig';
+      allow create, update: if admin() && settingId == 'reportConfig'
+        && request.resource.data.locations is list
+        && request.resource.data.locations.size() <= 100;
+      allow delete: if admin() && settingId == 'reportConfig';
+    }
+
     match /users/{uid} {
       allow create: if request.auth != null && request.auth.uid == uid
         && request.resource.data.uid == uid
@@ -38,7 +57,9 @@ service cloud.firestore {
         && request.resource.data.ownerUid == request.auth.uid
         && request.resource.data.ownerEmail == request.auth.token.email
         && request.resource.data.status == 'Nuevo'
-        && request.resource.data.keys().hasAll(['title','category','location','description','priority','ownerUid','createdAt']);
+        && request.resource.data.keys().hasAll(['title','category','location','description','priority','ownerUid','createdAt','severityScore','severityAnswers'])
+        && get(/databases/$(database)/documents/settings/reportConfig).data.locations.hasAny([request.resource.data.location])
+        && validSeverity();
       allow read: if signedIn() && (owner(resource.data) || admin()
         || role() == 'tecnico' && resource.data.assignedTo == request.auth.uid);
       // El dueño puede añadir mensajes, sin cambiar estado, asignación, prioridad o historial.
