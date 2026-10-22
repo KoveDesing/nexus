@@ -42,6 +42,7 @@
     </nav>
     <div class="sidebar-bottom"><div class="profile-mini"><div id="avatarMini" class="avatar">N</div><div class="profile-text"><strong id="sideName">Usuario</strong><small id="sideRole">Usuario</small></div><button id="settingsBtn" title="Personalizar perfil">⚙</button></div><button id="privacyBtn" class="logout">▤ Privacidad y seguridad</button><button id="logoutBtn" class="logout">↪ Cerrar sesión</button></div>
   </aside>
+  <button id="drawerEdgeHandle" class="drawer-edge-handle" type="button" aria-label="Abrir panel de cuenta" aria-controls="accountDrawer" aria-expanded="false"><span aria-hidden="true">☰</span><small>CUENTA</small></button>
   <div id="accountDrawerBackdrop" class="account-drawer-backdrop" aria-hidden="true"></div>
   <aside id="accountDrawer" class="account-drawer" aria-label="Perfil y configuración" aria-hidden="true">
     <div class="drawer-grabber" aria-hidden="true"></div>
@@ -54,14 +55,16 @@
     <button class="drawer-action" id="drawerProfile" type="button"><span class="drawer-icon">♙</span><span><strong>Perfil y apariencia</strong><small>Foto, nombre y color de acento</small></span><span class="drawer-chevron">›</span></button>
     <button class="drawer-action" id="drawerPrivacy" type="button"><span class="drawer-icon">⌑</span><span><strong>Privacidad y seguridad</strong><small>Datos y protección de la cuenta</small></span><span class="drawer-chevron">›</span></button>
     <p class="drawer-section-label">HERRAMIENTAS</p>
-    <button class="drawer-action staff-only hidden" data-view="team" type="button"><span class="drawer-icon">⌘</span><span><strong>Gestión técnica</strong><small>Estados y asignaciones</small></span><span class="drawer-chevron">›</span></button>
-    <button class="drawer-action admin-only hidden" data-view="private" type="button"><span class="drawer-icon">◈</span><span><strong>Panel privado</strong><small>Administración de NEXUS</small></span><span class="drawer-chevron">›</span></button>
+    <div class="drawer-tools-grid">
+      <button class="drawer-action drawer-tool-card staff-only hidden" data-view="team" type="button"><span class="drawer-icon">⌘</span><span><strong>Gestión técnica</strong><small>Estados y asignaciones</small></span></button>
+      <button class="drawer-action drawer-tool-card admin-only hidden" data-view="private" type="button"><span class="drawer-icon">◈</span><span><strong>Panel privado</strong><small>Administración de NEXUS</small></span></button>
+    </div>
     <div class="drawer-spacer"></div>
     <button id="drawerLogout" class="drawer-logout" type="button"><span>↪</span> Cerrar sesión</button>
     <p class="drawer-version">NEXUS · Colegio Balbino García</p>
   </aside>
   <main class="main">
-    <header class="topbar"><div><p class="eyebrow">COLEGIO BALBINO GARCÍA</p><h2 id="pageTitle">Resumen</h2></div><div class="top-actions"><span class="live-dot"></span><span class="muted small-text system-label">Sistema activo</span><button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar entre tema claro y oscuro">☼ <span>Claro</span></button><button id="profileTop" class="avatar" aria-label="Abrir perfil">N</button></div></header>
+    <header class="topbar"><div><p class="eyebrow">COLEGIO BALBINO GARCÍA</p><h2 id="pageTitle">Resumen</h2></div><div class="top-actions"><span class="live-dot"></span><span class="muted small-text system-label">Sistema activo</span><button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar entre tema claro y oscuro">☼ <span>Claro</span></button><button id="openAccountDrawer" class="account-menu-button" type="button" aria-controls="accountDrawer" aria-expanded="false"><span class="menu-lines" aria-hidden="true">☰</span><span class="menu-button-label">Cuenta y ajustes</span></button><button id="profileTop" class="avatar" aria-label="Abrir perfil y configuración">N</button></div></header>
     <div id="toast" class="toast hidden" role="status"></div>
     <section id="overviewView" class="view">
       <div class="welcome"><div><p class="eyebrow">TU CENTRO DE CONTROL</p><h1 id="welcomeTitle">Hola, bienvenido.</h1><p class="muted">Aquí tienes una vista clara de lo que está pasando.</p></div><button id="newReportHero" class="primary student-only">＋ Crear reporte</button></div>
