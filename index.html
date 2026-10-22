@@ -99,7 +99,7 @@
   }, true);
 </script>
 <script type="module">
-  import("./app.js").catch(function (error) {
+  import("./app.js?v=20261022-2").catch(function (error) {
     console.error("No se pudo cargar NEXUS:", error);
     const message = document.getElementById("authMessage");
     if (message) message.textContent = "No se pudo iniciar el módulo de Firebase. Comprueba que todos los archivos estén publicados y que tengas conexión a internet.";
