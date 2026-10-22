@@ -357,7 +357,8 @@ img,svg,video,canvas{max-width:100%}
   .section-intro>.primary{flex:0 0 auto}
 }
 @media(max-width:370px){
-  .account-menu-button{padding:0 8px;gap:5px;font-size:10px}
+  .account-menu-button{width:40px;min-width:40px;min-height:40px;padding:0;gap:0;font-size:10px}
+  .account-menu-button .menu-button-label{display:none}
   .top-actions{gap:5px}
   .topbar .avatar{width:36px;height:36px;min-width:36px;min-height:36px}
 }
