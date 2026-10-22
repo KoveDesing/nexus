@@ -333,3 +333,52 @@ img,svg,video,canvas{max-width:100%}
   .topbar .avatar{cursor:pointer;box-shadow:0 0 0 3px var(--accent-soft)}
 }
 @media(prefers-reduced-motion:reduce){.account-drawer,.account-drawer-backdrop{transition:none!important}}
+
+/* NEXUS usability pass: visible entry point, clearer hierarchy and balanced tool cards. */
+.account-menu-button{display:none;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 12px;border:0;border-radius:12px;background:var(--surface-2);color:var(--ink);font-size:12px;font-weight:600;white-space:nowrap}
+.account-menu-button .menu-lines{font-size:17px;line-height:1;color:var(--accent)}
+.drawer-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch}
+.drawer-tool-card{min-width:0;min-height:124px!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:10px;padding:13px!important;margin:0!important;border-radius:14px!important;background:var(--surface)!important;text-align:left}
+.drawer-tool-card .drawer-icon{width:34px;height:34px;flex:0 0 34px;border-radius:10px}
+.drawer-tool-card>span:nth-child(2){width:100%;gap:5px}
+.drawer-tool-card strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+.drawer-tool-card small{font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+.drawer-tools-grid:empty{display:none}
+.top-actions{min-width:0}
+@media(max-width:720px){
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .topbar>div:first-child{min-width:0}
+  .topbar h2{overflow-wrap:anywhere}
+  .top-actions{display:flex;align-items:center;gap:7px}
+  .account-menu-button{display:inline-flex;min-height:42px;padding:0 10px;font-size:11px}
+  .account-menu-button:active,.account-menu-button:focus-visible{background:var(--accent-soft);outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:1px}
+  .topbar .avatar{width:38px;height:38px;min-width:38px;min-height:38px}
+  .drawer-tools-grid{gap:9px;margin:2px 0 8px}
+  .drawer-tool-card{min-height:116px!important;padding:12px!important}
+  .drawer-action:not(.drawer-tool-card){min-height:62px}
+  .drawer-section-label{margin-top:13px}
+  .admin-mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .admin-mini-stats .stat-card{min-height:116px}
+  .private-banner{gap:11px}
+  .private-banner h3{font-size:16px;line-height:1.3}
+  .section-intro{gap:10px;flex-wrap:wrap}
+  .section-intro>div{min-width:0;flex:1 1 180px}
+  .section-intro>.primary{flex:0 0 auto}
+}
+@media(max-width:370px){
+  .account-menu-button{padding:0 8px;gap:5px;font-size:10px}
+  .top-actions{gap:5px}
+  .topbar .avatar{width:36px;height:36px;min-width:36px;min-height:36px}
+  .drawer-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .drawer-tool-card{padding:10px!important;min-height:112px!important}
+  .drawer-tool-card strong{font-size:11px}
+}
+
+.drawer-edge-handle{display:none}
+@media(max-width:720px){
+ .drawer-edge-handle{position:fixed;z-index:20;left:0;top:47%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:27px;min-height:72px;padding:8px 3px;border:0;border-radius:0 10px 10px 0;background:var(--surface-2);color:var(--accent);box-shadow:3px 4px 14px rgba(0,0,0,.14);opacity:.96}
+ .drawer-edge-handle span{font-size:15px;line-height:1}
+ .drawer-edge-handle small{font-size:7px;font-weight:750;letter-spacing:.5px;writing-mode:vertical-rl;transform:rotate(180deg)}
+ .drawer-edge-handle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ .account-drawer.is-open~.drawer-edge-handle{visibility:hidden}
+}
