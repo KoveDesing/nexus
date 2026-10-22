@@ -297,3 +297,39 @@ img,svg,video,canvas{max-width:100%}
   .auth-card{padding:22px 18px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Mobile account drawer: profile and privileged actions live off-canvas, not in the page flow. */
+.account-drawer-backdrop{display:none}
+.account-drawer{display:none}
+@media(max-width:720px){
+  .sidebar-bottom{display:none!important}
+  .sidebar{padding-top:8px;padding-bottom:0}
+  .brand{padding-bottom:5px}
+  .new-report{display:none}
+  .account-drawer-backdrop{display:block;position:fixed;z-index:40;inset:0;background:rgba(8,8,12,.58);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+  .account-drawer{display:flex;position:fixed;z-index:41;inset:0 auto 0 0;width:min(88vw,360px);max-width:calc(100vw - 44px);height:100vh;height:100dvh;box-sizing:border-box;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) 18px calc(15px + env(safe-area-inset-bottom));background:var(--surface-2);color:var(--ink);border:0;border-radius:0 22px 22px 0;box-shadow:12px 0 40px rgba(0,0,0,.22);transform:translateX(-105%);visibility:hidden;transition:transform .25s cubic-bezier(.2,.75,.25,1),visibility .25s ease;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .account-drawer.is-open{transform:translateX(0);visibility:visible}
+  .account-drawer-backdrop.is-open{opacity:1;visibility:visible}
+  body.drawer-open{overflow:hidden;touch-action:pan-y}
+  .drawer-grabber{width:36px;height:4px;border-radius:99px;background:var(--muted);opacity:.25;align-self:center;margin:0 0 22px}
+  .drawer-head{display:flex;align-items:center;gap:12px;padding:0 0 22px}
+  .drawer-avatar{width:48px;height:48px;min-width:48px;min-height:48px;border-radius:16px;display:grid;place-items:center;background-color:var(--accent-soft);color:var(--accent);font-size:17px;font-weight:700;background-position:center;background-repeat:no-repeat}
+  .drawer-user{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+  .drawer-user strong{font-size:15px;line-height:1.3;overflow-wrap:anywhere}
+  .drawer-user small{font-size:12px;color:var(--muted)}
+  .drawer-close{width:40px;min-width:40px;height:40px;min-height:40px;font-size:22px}
+  .drawer-section-label{font-size:10px;font-weight:700;letter-spacing:1.1px;color:var(--muted);margin:9px 0 8px;padding:0 4px}
+  .drawer-action{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 10px;min-height:64px;border:0;border-radius:14px;background:transparent;color:var(--ink);margin:2px 0}
+  .drawer-action:active,.drawer-action:focus-visible{background:var(--surface-3);outline:none}
+  .drawer-icon{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:12px;background:var(--surface-3);color:var(--accent);font-size:18px}
+  .drawer-action>span:nth-child(2){display:flex;min-width:0;flex:1;flex-direction:column;gap:3px}
+  .drawer-action strong{font-size:13px;font-weight:600;line-height:1.35}
+  .drawer-action small{font-size:11px;color:var(--muted);line-height:1.4}
+  .drawer-chevron{font-size:23px;color:var(--muted);padding:0 4px}
+  .drawer-spacer{flex:1;min-height:25px}
+  .drawer-logout{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;border:0;border-radius:13px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:650}
+  .drawer-logout span{font-size:18px}
+  .drawer-version{margin:14px 0 0;text-align:center;color:var(--muted);font-size:10px;letter-spacing:.2px}
+  .topbar .avatar{cursor:pointer;box-shadow:0 0 0 3px var(--accent-soft)}
+}
+@media(prefers-reduced-motion:reduce){.account-drawer,.account-drawer-backdrop{transition:none!important}}
