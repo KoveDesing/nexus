@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/33793579/README.md)
+[README.md](https://github.com/user-attachments/files/33793989/README.md)
 # NEXUS — Colegio Balbino García
 
 Aplicación web responsive para registrar y hacer seguimiento a fallas institucionales, con tema oscuro, acento configurable, perfil básico y panel privado de administración. Esta versión usa Firebase Authentication y Firestore. La foto de perfil se guarda localmente en el navegador; no utiliza servicios externos de imágenes.
