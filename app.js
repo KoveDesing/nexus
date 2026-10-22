@@ -56,10 +56,13 @@ function renderAdminLocations(){
  const list=$("adminLocationsList");if(!list)return;
  list.innerHTML=configuredLocations.length?configuredLocations.map((name,i)=>`<div class="admin-location-row"><span>${esc(name)}</span><button type="button" class="subtle" data-remove-location="${i}" aria-label="Eliminar ubicación ${esc(name)}">Eliminar</button></div>`).join(""):empty("Todavía no hay ubicaciones","Añade por ejemplo Salón de informática 1, Biblioteca o Patio.");
 }
-async function loadLocationConfig(){
+function loadLocationConfig(){
  if(!currentUser)return;
- try{const snap=await getDoc(locationConfigRef());configuredLocations=Array.isArray(snap.data()?.locations)?snap.data().locations.filter(x=>typeof x==="string"&&x.trim()):[];renderLocationOptions();renderAdminLocations()}
- catch(err){console.error(err);toast("No se pudo cargar la lista de ubicaciones. Revisa las reglas de Firestore.",true)}
+ if(locationsUnsubscribe)locationsUnsubscribe();
+ locationsUnsubscribe=onSnapshot(locationConfigRef(),snap=>{
+  configuredLocations=Array.isArray(snap.data()?.locations)?snap.data().locations.filter(x=>typeof x==="string"&&x.trim()):[];
+  renderLocationOptions();renderAdminLocations();
+ },err=>{console.error(err);toast("No se pudo cargar la lista de ubicaciones. Revisa las reglas de Firestore.",true)});
 }
 async function saveLocations(next){
  if(!isAdmin())throw new Error("Solo el administrador puede cambiar las ubicaciones.");
@@ -124,6 +127,6 @@ $("detailBody").innerHTML=html;showModal("detailModal");
 $("messageForm").onsubmit=async e=>{e.preventDefault();const text=$("messageText").value.trim();if(!text)return;try{const fresh=reports.find(x=>x.id===activeReport.id);await updateDoc(doc(db,"reports",fresh.id),{messages:[...(fresh.messages||[]),{text,byUid:currentUser.uid,byName:profile?.displayName||currentUser.email,at:new Date().toISOString()}],updatedAt:serverTimestamp()});$("messageText").value="";toast("Mensaje enviado.")}catch(err){toast("No se pudo enviar el mensaje. Verifica los permisos.",true)}};
 if(canManage())$("saveCase").onclick=async()=>{const fresh=reports.find(x=>x.id===activeReport.id),status=$("editStatus").value,priority=$("editPriority").value,email=$("assignEmail").value.trim(),note=$("techNote").value.trim();try{let assignedTo=fresh.assignedTo||null,assignedName=fresh.assignedName||null;if(email){const qs=await getDocs(query(collection(db,"users"),where("email","==",email),limit(1)));if(qs.empty)throw Error("No encontramos una cuenta con ese correo.");const u=qs.docs[0].data();if(u.role!=="tecnico")throw Error("La cuenta indicada no tiene el rol Técnico.");assignedTo=u.uid;assignedName=u.displayName||email}const changes={status,priority,assignedTo,assignedName,assignedEmail:email||null,updatedAt:serverTimestamp(),history:[...(fresh.history||[]),{action:`Estado: ${status}; prioridad: ${priority}${email?`; asignado a ${email}`:""}`,byUid:currentUser.uid,byName:profile?.displayName||currentUser.email,at:new Date().toISOString(),note}]};await updateDoc(doc(db,"reports",fresh.id),changes);toast("Reporte actualizado.");hideModal("detailModal")}catch(err){toast(err.message||"No se pudo actualizar el reporte.",true)}};
 }
-onAuthStateChanged(auth,async user=>{currentUser=user;if(!user){if(unsubReports)unsubReports();profile=null;$("appView").classList.add("hidden");$("authView").classList.remove("hidden");return}try{await loadProfile(user);$("authView").classList.add("hidden");$("appView").classList.remove("hidden");await loadLocationConfig();switchView(role()==="administrador"?"private":"overview");subscribeReports()}catch(err){console.error(err);if(err.code==="nexus/account-suspended"){setAuthMessage(err.message);$("authView").classList.remove("hidden");$("appView").classList.add("hidden")}else toast("No se pudo cargar tu perfil. Revisa las reglas de Firebase.",true);await signOut(auth)}});
+onAuthStateChanged(auth,async user=>{currentUser=user;if(!user){if(unsubReports)unsubReports();if(locationsUnsubscribe){locationsUnsubscribe();locationsUnsubscribe=null}profile=null;$("appView").classList.add("hidden");$("authView").classList.remove("hidden");return}try{await loadProfile(user);$("authView").classList.add("hidden");$("appView").classList.remove("hidden");await loadLocationConfig();switchView(role()==="administrador"?"private":"overview");subscribeReports()}catch(err){console.error(err);if(err.code==="nexus/account-suspended"){setAuthMessage(err.message);$("authView").classList.remove("hidden");$("appView").classList.add("hidden")}else toast("No se pudo cargar tu perfil. Revisa las reglas de Firebase.",true);await signOut(auth)}});
 
 window.__nexusAppReady = true;
