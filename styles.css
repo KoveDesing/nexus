@@ -382,3 +382,27 @@ img,svg,video,canvas{max-width:100%}
  .drawer-edge-handle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
  .account-drawer.is-open~.drawer-edge-handle{visibility:hidden}
 }
+
+/* NEXUS incident intake: admin-managed locations and guided severity assessment. */
+.location-admin-panel{padding:18px;margin:0 0 24px}
+.location-config-form{display:flex;flex-direction:column;gap:9px}
+.location-config-form>label{font-size:12px;font-weight:650;color:var(--ink)}
+.location-add-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}
+.location-add-row input{width:100%;min-width:0;min-height:44px;padding:11px 13px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--ink)}
+.location-add-row button{min-height:44px;white-space:nowrap}
+.admin-locations-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0}
+.admin-location-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:10px 12px;border-radius:12px;background:var(--surface-2)}
+.admin-location-row>span{min-width:0;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+.admin-location-row button{flex:0 0 auto;min-height:34px;padding:6px 9px;font-size:11px}
+.severity-check{display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;background:var(--surface-2)}
+.severity-check>div:first-child h3{font-size:17px;margin:4px 0 7px}
+.severity-check>label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600;line-height:1.45}
+.severity-check select{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--border);border-radius:11px;background:var(--surface);color:var(--ink)}
+.severity-preview{display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:12px;background:var(--surface);font-size:13px;line-height:1.45;color:var(--muted)}
+.severity-preview strong{color:var(--ink)}
+.severity-preview small{font-size:11px;color:var(--muted);font-weight:400}
+.severity-preview.severity-crítica{background:color-mix(in srgb,#ef4444 14%,var(--surface));color:#ef4444}
+.severity-preview.severity-alta{background:color-mix(in srgb,#f97316 13%,var(--surface));color:#f97316}
+.severity-preview.severity-media{background:color-mix(in srgb,#eab308 13%,var(--surface));color:#b68b08}
+.severity-preview.severity-baja{background:color-mix(in srgb,#22c55e 12%,var(--surface));color:#22a05a}
+@media(max-width:720px){.location-admin-panel{padding:14px;margin-bottom:20px}.location-add-row{grid-template-columns:minmax(0,1fr)}.location-add-row button{width:100%}.admin-locations-list{grid-template-columns:minmax(0,1fr);gap:7px}.admin-location-row{padding:11px}.severity-check{padding:13px;border-radius:13px}.severity-check>div:first-child h3{font-size:16px}.severity-check>label{font-size:12px}}
